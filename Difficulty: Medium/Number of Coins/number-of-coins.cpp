@@ -6,39 +6,37 @@ using namespace std;
 class Solution{
 
 	public:
+	
+	int val(vector<int> &coins, vector<vector<int>> &dp, int v, int i){
+	    if(dp[i][v] != -1)
+	        return dp[i][v];
+	    
+	    if(i == 0){
+	        if(v % coins[i] == 0)
+	            return dp[i][v] = v/coins[i];
+	            
+	        return dp[i][v] = 1e7;
+	    }
+	    int noTake = val(coins, dp, v, i-1);
+	    int take = 1e7;
+	    if(v >= coins[i]){
+	        take = val(coins, dp, v-coins[i], i) +1;
+	    }
+	    return dp[i][v] = min(take, noTake);
+	}
+	
 	int minCoins(vector<int> &coins, int M, int V) 
 	{ 
 	    // Your code goes here
 	    sort(coins.begin(), coins.end());
-	    vector<vector<int>>dp(M, vector<int>(V+1,-1));
-	    int ans = traversal(coins, V, M-1, dp);
-	    if(ans >= 1e9)
+	    vector<vector<int>> dp(M, vector<int>(V+1, -1));
+	    int n = val(coins, dp, V, M-1);
+	    if(n >= 1e7)
 	        return -1;
-	       return ans;
+	        
+	    return n;
+	    
 	} 
-	
-	
-	int traversal(vector<int> &coins, int v, int i, vector<vector<int>> &dp){
-	    if(v==0)
-	        return 0;
-	    if(i == 0){
-	        if(v%coins[i] == 0)
-	            return v/coins[0];
-	       return 1e9;
-	    }
-	    
-	    
-	    if(dp[i][v]!=-1){
-	        return dp[i][v];
-	    }
-	    
-	    int notake = traversal(coins, v, i-1, dp);
-	    int take = 1e9;
-	    if(v >= coins[i]){
-	        take = 1+traversal(coins, v-coins[i], i, dp);
-	    }
-	    return dp[i][v] = min(take, notake);
-	}
 	  
 };
 
