@@ -97,29 +97,26 @@ class Solution {
   public:
     vector <int> bottomView(Node *root) {
         // Your Code Here
-        vector<int> ans;
-        queue<pair<Node*, int>> q;
-        unordered_map<int, int> mp;
-        int minLevel = 0;
-        int maxLevel = 0;
-        q.push({root, 0});
-        while(q.empty() == false){
-            auto curr = q.front();
+        vector<int>ans;
+        queue<pair<int, Node*>> q;
+        map<int, int> mp;
+        int curr=0;
+        q.push({curr, root});
+        while(!q.empty()){
+            pair<int, Node*> p = q.front();
             q.pop();
-            Node* currNode = curr.first;
-            int currLevel = curr.second;
-            minLevel = min(currLevel, minLevel);
-            maxLevel = max(currLevel, maxLevel);
-            if(currNode->left){
-                q.push({currNode->left, currLevel - 1});
+            curr = p.first;
+            Node *nd = p.second;
+            mp[curr] = nd->data;
+            if(nd->left){
+                q.push({curr-1, nd->left});
             }
-            if(currNode->right){
-                q.push({currNode->right, currLevel + 1});
+            if(nd->right){
+                q.push({curr+1, nd->right});
             }
-            mp[currLevel] = currNode->data;
         }
-        for(int i = minLevel; i <= maxLevel; i++){
-            ans.push_back(mp[i]);
+        for(auto a : mp){
+            ans.push_back(a.second);
         }
         return ans;
     }
