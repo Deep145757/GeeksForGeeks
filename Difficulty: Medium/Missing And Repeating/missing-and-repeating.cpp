@@ -3,32 +3,31 @@
 
 using namespace std;
 
+
 // } Driver Code Ends
-class Solution{
-public:
-    vector<int> findTwoElement(vector<int> arr, int n) {
+class Solution {
+  public:
+    vector<int> findTwoElement(vector<int>& arr) {
         // code here
-        vector<int> ans;
-        int count[n+1] = { };
-        long long sum = n*(n+1)/2;
-        long long currsum=0;
-        for(int i=0; i<n; i++){
-            count[arr[i]] ++;
-            //currsum += arr[i];
-            if(count[arr[i]]==2){
-                ans.push_back(arr[i]);
-                //currsum -= arr[i];
-            }
-            else 
-                currsum += arr[i];
-        }
-        for(int i=1; i<=n; i++) {
-            if(count[i]==0){
-                ans.push_back(i);
-                break;    
+        vector<int>ans(2);
+        unordered_map<int, int>mp;
+        int mx=0;
+        int mxcount=0, mxcountnum=0;
+        for(int i=0; i<arr.size(); i++){
+            mx = max(mx, arr[i]);
+            mp[arr[i]] ++;
+            if(mp[arr[i]] > mxcount){
+                mxcountnum = arr[i];
+                mxcount = mp[arr[i]];
             }
         }
-        //ans.push_back(sum-currsum);
+        ans[0] = mxcountnum;
+        for(int i=1; ; i++){
+            if(!mp[i]){
+                ans[1] = i;
+                return ans;
+            }
+        }
         return ans;
     }
 };
@@ -46,7 +45,7 @@ int main() {
             cin >> a[i];
         }
         Solution ob;
-        auto ans = ob.findTwoElement(a, n);
+        auto ans = ob.findTwoElement(a);
         cout << ans[0] << " " << ans[1] << "\n";
     }
     return 0;
