@@ -97,21 +97,29 @@ class Solution {
     // Function to return a list of integers denoting the node
     // values of both the BST in a sorted order.
     
-    void travel(Node *root, vector<int> &arr){
+    void trav(map<int, int>&mp, Node *root){
         if(!root)
             return;
-        arr.push_back(root->data);
-        travel(root->left, arr);
-        travel(root->right, arr);
+        mp[root->data] ++;
+        trav(mp, root->left);
+        trav(mp, root->right);
     }
-    
     
     vector<int> merge(Node *root1, Node *root2) {
         // Your code here
+        map<int, int>mp;
+        Node *ptr = root1;
+        trav(mp, ptr);
+        ptr = root2;
+        trav(mp, ptr);
         vector<int>ans;
-        travel(root1, ans);
-        travel(root2, ans);
-        sort(ans.begin(), ans.end());
+        for(auto i:mp){
+            int j = i.second;
+            while(j > 0){
+                ans.push_back(i.first);
+                j--;
+            }
+        }
         return ans;
     }
 };
