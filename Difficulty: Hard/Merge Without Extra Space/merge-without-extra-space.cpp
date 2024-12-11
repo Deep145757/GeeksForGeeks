@@ -1,82 +1,71 @@
 //{ Driver Code Starts
-#include <bits/stdc++.h> 
-using namespace std; 
+#include <bits/stdc++.h>
+using namespace std;
 
 
 // } Driver Code Ends
-class Solution{
-    public:
-        //Function to merge the arrays.
-        void merge(long long arr1[], long long arr2[], int n, int m) 
-        { 
-            // code here 
-            int low=0;
-            int left=n-1;
-            int high=0;
-            int right=m-1;
-            vector<long long>temp;
-            while(low<=left && high<=right){
-                if(arr1[low]<=arr2[high]){
-                    temp.push_back(arr1[low]);
-                    low++;
-                }
-                else{
-                    temp.push_back(arr2[high]);
-                    high++;
-                }
+class Solution {
+  public:
+    void mergeArrays(vector<int>& a, vector<int>& b) {
+        // code here
+        int l1=a.size();
+        int l2=b.size();
+        int i=0;
+        while(i<l1&&i<l2){
+            if(a[l1-1-i]>b[i]){
+                swap(a[l1-1-i],b[i]);
             }
-            while(low<=left){
-                temp.push_back(arr1[low]);
-                low++;
-            }
-            while(high<=right){
-                temp.push_back(arr2[high]);
-                high++;
-            }
-            for(int i=0;i<n;i++){
-                arr1[i]=temp[i];
-            }
-            for(int i=0;i<m;i++){
-                arr2[i]=temp[n+i];
-            }
-        } 
+            i++;
+        }
+        sort(a.begin(),a.end());
+        sort(b.begin(),b.end());
+    }
 };
 
 //{ Driver Code Starts.
 
-int main() 
-{ 
-	
-	int T;
-	cin >> T;
-	
-	while(T--){
-	    int n, m;
-	    cin >> n >> m;
-	    
-	    long long arr1[n], arr2[m];
-	    
-	    for(int i = 0;i<n;i++){
-	        cin >> arr1[i];
-	    }
-	    
-	    for(int i = 0;i<m;i++){
-	        cin >> arr2[i];
-	    }
-	    Solution ob;
-	    ob.merge(arr1, arr2, n, m); 
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 
-        for (int i = 0; i < n; i++) 
-            cout<<arr1[i]<<" "; 
-        
-       
-	    for (int i = 0; i < m; i++) 
-		    cout<<arr2[i]<<" "; 
-	    
-	    cout<<endl;
-	}
+    int t;
+    cin >> t; // Inputting the test cases
 
-	return 0; 
-} 
+    while (t--) {
+        vector<int> a, b;
+
+        // Reading the first array as a space-separated line
+        string arr1;
+        getline(cin >> ws, arr1); // Use ws to ignore any leading whitespace
+        stringstream ss1(arr1);
+        int num;
+        while (ss1 >> num) {
+            a.push_back(num);
+        }
+
+        // Reading the second array as a space-separated line
+        string arr2;
+        getline(cin, arr2);
+        stringstream ss2(arr2);
+        while (ss2 >> num) {
+            b.push_back(num);
+        }
+
+        Solution ob;
+        ob.mergeArrays(a, b);
+
+        // Output the merged result
+        for (int i = 0; i < a.size(); i++) {
+            cout << a[i] << " ";
+        }
+        cout << endl;
+        for (int i = 0; i < b.size(); i++) {
+            cout << b[i] << " ";
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
 
 // } Driver Code Ends
