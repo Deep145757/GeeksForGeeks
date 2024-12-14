@@ -8,15 +8,24 @@ class Solution {
   public:
     int search(vector<int>& arr, int key) {
         // complete the function here
-        bool issmall=0;
         int n = arr.size();
-        for(int i=0; i<n; i++){
-            if(key == arr[i])
-                return i;
-            else if(key  > arr[i])
-                issmall = 1;
-            else if(key > arr[i]){
-                if(issmall)
+        if(arr[0]==key)
+            return 0;
+        if(arr[0]<key){
+            int prev=arr[0];
+            for(int i=1; i<n; i++){
+                if(arr[i]==key)
+                    return i;
+                else if(arr[i]>key || arr[i]<prev)
+                    return -1;
+                prev = arr[i];
+            }
+        }
+        else{
+            for(int i=n-1; i>=0; i--){
+                if(arr[i]==key)
+                    return i;
+                else if(arr[i]<key || arr[i]>arr[0])
                     return -1;
             }
         }
@@ -42,6 +51,7 @@ int main() {
         cin >> key;
         Solution ob;
         cout << ob.search(arr, key) << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
