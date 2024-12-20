@@ -7,7 +7,7 @@ using namespace std;
 class Solution {
   public:
     vector<int> spirallyTraverse(vector<vector<int> > &matrix) {
-        // code hereint
+        // code here
         int m = matrix.size();
         int n = matrix[0].size();
         vector<vector<int>>visit(m, vector<int>(n, 0)); 
@@ -70,9 +70,10 @@ int main() {
     while (t--) {
         int r, c;
         cin >> r >> c;
-        vector<vector<int>> matrix(r, vector<int>(c, 0));
+        vector<vector<int>> matrix(r);
 
         for (int i = 0; i < r; i++) {
+            matrix[i].assign(c, 0);
             for (int j = 0; j < c; j++) {
                 cin >> matrix[i][j];
             }
@@ -83,6 +84,9 @@ int main() {
         for (int i = 0; i < result.size(); ++i)
             cout << result[i] << " ";
         cout << endl;
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
