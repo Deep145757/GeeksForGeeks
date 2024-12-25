@@ -2,32 +2,33 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // } Driver Code Ends
 class Solution {
   public:
     // Function to return a list containing the DFS traversal of the graph.
-    
-        void dfs(int curr, vector<int> adj[], vector<bool>& vis, vector<int>&ans){
-            vis[curr] = 1;
-            ans.push_back(curr);
-            for(int i=0; i<adj[curr].size(); i++){
-                if(!vis[adj[curr][i]])
-                    dfs(adj[curr][i], adj, vis, ans);
+    void bfs(vector<vector<int>>& adj, set<int> &visited, vector<int>&ans, int i){
+        int n = visited.size();
+        visited.insert(i);
+        if(n != visited.size()){
+            ans.push_back(i);
+            for(int it : adj[i]){
+                bfs(adj, visited, ans, it);
             }
         }
+    }
     
-    vector<int> dfsOfGraph(int V, vector<int> adj[]) {
+    vector<int> dfsOfGraph(vector<vector<int>>& adj) {
         // Code here
-        
-        
-        vector<bool> vis(V, 0);
-        vector<int> ans;
-        dfs(0, adj, vis, ans);
+        set<int>visited;
+        vector<int>ans;
+        bfs(adj, visited, ans, 0);
         return ans;
     }
 };
 
 //{ Driver Code Starts.
+
 int main() {
     int tc;
     cin >> tc;
@@ -35,7 +36,8 @@ int main() {
         int V, E;
         cin >> V >> E;
 
-        vector<int> adj[V];
+        vector<vector<int>> adj(
+            V); // Use vector of vectors instead of array of vectors.
 
         for (int i = 0; i < E; i++) {
             int u, v;
@@ -43,15 +45,16 @@ int main() {
             adj[u].push_back(v);
             adj[v].push_back(u);
         }
-        // string s1;
-        // cin>>s1;
+
         Solution obj;
-        vector<int> ans = obj.dfsOfGraph(V, adj);
+        vector<int> ans = obj.dfsOfGraph(adj);
         for (int i = 0; i < ans.size(); i++) {
             cout << ans[i] << " ";
         }
         cout << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
+
 // } Driver Code Ends
