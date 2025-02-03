@@ -96,13 +96,8 @@ class Solution {
     
     int height(Node* node) {
         // code here
-        if(!node)
-            return -1;
-            
-        int r = height(node->right);
-        int l = height(node->left);
-            
-        return 1 + max(r, l);
+        return (node) ? 1+max(height(node->right), height(node->left)) : -1;
+        
     }
 };
 
