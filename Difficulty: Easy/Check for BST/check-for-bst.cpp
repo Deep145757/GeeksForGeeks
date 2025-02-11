@@ -20,22 +20,19 @@ struct Node {
 class Solution {
   public:
     // Function to check whether a Binary Tree is BST or not.
-    
-    bool travel(Node *root, int min, int max){
-        if(!root)
-            return true;
-        if(root->data <= min || root->data >= max)
+    bool bst(Node* root, int high, int low){
+        if (!root) 
+            return true; // Base case: null node is valid
+
+        if (root->data <= low || root->data >= high)
             return false;
-            
-        bool l = travel(root->left, min, root->data);
-        bool r = travel(root->right, root->data, max);
-        
-        return (l && r);
+    
+        return bst(root->left, root->data, low) & bst(root->right, high, root->data);
     }
     
     bool isBST(Node* root) {
         // Your code here
-        return travel(root, INT_MIN, INT_MAX);
+        return bst(root, INT_MAX, INT_MIN);
     }
 };
 
@@ -134,6 +131,7 @@ int main() {
 
         else
             cout << "false\n";
+        cout << "~" << endl;
     }
     return 0;
 }
