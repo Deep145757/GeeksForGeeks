@@ -4,35 +4,28 @@ using namespace std;
 
 
 // } Driver Code Ends
+
 class Solution {
   public:
-    int f(int n, vector<int>& coins, vector<vector<int>> &dp, int sum){
+    int solve(int sum, vector<int>&coins, int i, vector<vector<int>>&dp){
         if(sum == 0)
             return 1;
-            
-        if(n<0 || sum<0)
+        if(i<0 || sum <0)
             return 0;
+        if(dp[i][sum] != -1)    
+            return dp[i][sum];
             
-        if(dp[n][sum]!=-1)
-            return dp[n][sum];
-            
-        int way=0;
-        if(sum >= coins[n]){
-            way += f(n, coins, dp, sum-coins[n]);
-        }
-        way += f(n-1, coins, dp, sum);
-        
-        return dp[n][sum] = way;
+        return dp[i][sum] = solve(sum-coins[i], coins, i, dp) + solve(sum, coins, i-1, dp);
     }
   
     int count(vector<int>& coins, int sum) {
         // code here.
         int n=coins.size();
-        vector<vector<int>> dp(n, vector<int>(sum+1, -1));
-        
-        return f(n-1, coins, dp, sum);
+        vector<vector<int>>dp(n, vector<int>(sum+1, -1));
+        return solve(sum, coins, n-1, dp);
     }
 };
+
 
 //{ Driver Code Starts.
 
