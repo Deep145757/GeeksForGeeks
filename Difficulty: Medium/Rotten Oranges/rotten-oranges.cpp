@@ -4,46 +4,51 @@ using namespace std;
 
 
 // } Driver Code Ends
+
 class Solution {
   public:
-    // Function to find minimum time required to rot all oranges.
     int orangesRotting(vector<vector<int>>& mat) {
         // Code here
         int n=mat.size(), m=mat[0].size();
-        vector<vector<int>>visit(n, vector<int>(m, 0));
+        vector<vector<int>> tm(n, vector<int>(m, 0));
+        int mx=0;
         queue<vector<int>>q;
-        int fresh=0, Time=0;
+        int arr[4] = {-1, 0, 1, 0};
+        
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
-                if(mat[i][j]==2){
-                    q.push({i, j, 0});
-                }
-                else if(mat[i][j]==1)
-                    fresh++;
+                if(mat[i][j] == 2)
+                    q.push({i, j});
             }
         }
-        int di[] = {-1, 0, 1, 0};
-        int dj[] = {0, -1, 0, 1};
+        
         while(!q.empty()){
-            vector<int>curr = q.front();
-            int i=curr[0], j=curr[1], t=curr[2];
-            Time = max(Time, t);
-            if(mat[i][j]==1){
-                fresh--;
-            }
-            for(int id=0; id<4; id++){
-                int ni = i+di[id];
-                int nj = j+dj[id];
-                if(ni>=0 && nj>=0 && ni<n && nj<m && !visit[ni][nj] && mat[ni][nj]==1){
-                    q.push({ni, nj, t+1});
-                    visit[ni][nj]=1;
+            int i = q.front()[0];
+            int j = q.front()[1];
+            q.pop();
+            
+            for(int t=0; t<4; t++){
+                int x = i+arr[t];
+                int y = j+arr[(t+1)%4];
+                
+                if(x>=0 && y>=0 && x<n && y<m && mat[x][y]==1 && tm[x][y]==0){
+                    mx = max(mx, tm[x][y] = tm[i][j]+1);
+                    q.push({x, y});
                 }
             }
-            q.pop();
         }
-        return fresh ? -1 : Time;
+        
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(mat[i][j] == 1 && tm[i][j]==0)
+                    return -1;
+            }
+        }
+        
+        return mx;
     }
 };
+
 
 //{ Driver Code Starts.
 int main() {
