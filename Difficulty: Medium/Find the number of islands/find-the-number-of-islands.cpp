@@ -2,42 +2,44 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // } Driver Code Ends
+
 class Solution {
   public:
-    // Function to find the number of islands.
-    void f(int i, int j, char ch, vector<vector<char>>& grid){
-        if(i<0 || j<0 || i>=grid.size() || j>=grid[0].size())
-            return ;
-        if(ch == grid[i][j]){
-            grid[i][j] = '0';
-            
-            f(i+1, j, ch, grid);
-            f(i-1, j, ch, grid);
-            f(i, j+1, ch, grid);
-            f(i, j-1, ch, grid);
-            
-            f(i+1, j+1, ch, grid);
-            f(i+1, j-1, ch, grid);
-            f(i-1, j+1, ch, grid);
-            f(i-1, j-1, ch, grid);
+    void travel(int i, int j, vector<vector<char>>& grid, vector<vector<bool>>&visit){
+        visit[i][j]=1;
+        
+        for(int dx=-1; dx<2; dx++){
+            for(int dy=-1; dy<2; dy++){
+                int x = i + dx;
+                int y = j + dy;
+                
+                if(x>=0 && y>=0 && x<grid.size() && y<grid[0].size() && grid[x][y]=='L' && !visit[x][y])
+                    travel(x, y, grid, visit);
+            }
         }
+        
     }
-    
-    int numIslands(vector<vector<char>>& grid) {
+  
+    int countIslands(vector<vector<char>>& grid) {
         // Code here
-        int n=grid.size(), m=grid[0].size(), count=0;
+        int count=0, n=grid.size(), m=grid[0].size();
+        vector<vector<bool>>visit(n, vector<bool>(m, 0));
+        
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
-                if(grid[i][j] != '0'){
-                    count++;
-                    f(i, j, grid[i][j], grid);
+                if(grid[i][j] == 'L' && !visit[i][j]){
+                    count ++;
+                    travel(i, j, grid, visit);
                 }
             }
         }
+        
         return count;
     }
 };
+
 
 //{ Driver Code Starts.
 int main() {
@@ -53,11 +55,12 @@ int main() {
             }
         }
         Solution obj;
-        int ans = obj.numIslands(grid);
+        int ans = obj.countIslands(grid);
         cout << ans << '\n';
-    
-cout << "~" << "\n";
-}
+
+        cout << "~"
+             << "\n";
+    }
     return 0;
 }
 // } Driver Code Ends
